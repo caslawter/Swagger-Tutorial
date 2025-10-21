@@ -1,0 +1,295 @@
+paths:
+  /api/pals:
+    get:
+      summary: Get all pals
+      description: Retrieve a complete list of all pals with their basic information
+      tags:
+        - Pals
+      responses:
+        '200':
+          description: Successfully retrieved all pals
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pals:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier for the pal
+                          example: "001"
+                        name:
+                          type: string
+                          description: Name of the pal
+                          example: "Lamball"
+                        elements:
+                          type: string
+                          description: Element type of the pal
+                          example: "Neutral"
+    
+    post:
+      summary: Create a new pal
+      description: Add a new pal to the database
+      tags:
+        - Pals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - elements
+              properties:
+                name:
+                  type: string
+                  description: Name of the pal
+                  example: "Pikachu"
+                elements:
+                  type: string
+                  description: Element type of the pal
+                  example: "Electric"
+      responses:
+        '201':
+          description: Pal created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pal created successfully"
+                  pal:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Auto-generated ID
+                        example: "010"
+                      name:
+                        type: string
+                        example: "Pikachu"
+                      elements:
+                        type: string
+                        example: "Electric"
+        '400':
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Missing required fields"
+                  required:
+                    type: array
+                    items:
+                      type: string
+                    example: ["name", "elements"]
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"
+
+  /api/pals/{id}:
+    get:
+      summary: Get pal by ID
+      description: Retrieve a single pal by its unique ID
+      tags:
+        - Pals
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The pal ID
+          example: "001"
+      responses:
+        '200':
+          description: Pal found successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pal:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "001"
+                      name:
+                        type: string
+                        example: "Lamball"
+                      elements:
+                        type: string
+                        example: "Neutral"
+        '404':
+          description: Pal not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Pal not found"
+                  message:
+                    type: string
+                    example: "No pal found with ID: 001"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    
+    put:
+      summary: Update pal by ID
+      description: Update an existing pal's information
+      tags:
+        - Pals
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The pal ID to update
+          example: "001"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Updated name of the pal
+                  example: "Updated Lamball"
+                elements:
+                  type: string
+                  description: Updated element type
+                  example: "Fire"
+      responses:
+        '200':
+          description: Pal updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pal updated successfully"
+                  pal:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "001"
+                      name:
+                        type: string
+                        example: "Updated Lamball"
+                      elements:
+                        type: string
+                        example: "Fire"
+        '404':
+          description: Pal not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Pal not found"
+                  message:
+                    type: string
+                    example: "No pal found with ID: 001"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+    
+    delete:
+      summary: Delete pal by ID
+      description: Remove a pal from the database
+      tags:
+        - Pals
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The pal ID to delete
+          example: "001"
+      responses:
+        '200':
+          description: Pal deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Pal deleted successfully"
+                  pal:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "001"
+                      name:
+                        type: string
+                        example: "Lamball"
+                      elements:
+                        type: string
+                        example: "Neutral"
+        '404':
+          description: Pal not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Pal not found"
+                  message:
+                    type: string
+                    example: "No pal found with ID: 001"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

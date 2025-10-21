@@ -2,6 +2,8 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
 import palsData from "./public/data/pals.json" with { type: "json" };
 import elementsData from "./public/data/elements.json" with  { type: "json" };
 
@@ -13,6 +15,28 @@ const app = express();
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Swagger configuration
+const swaggerOptions = {
+  definition: {
+    openapi: '3.1.2',
+    info: {
+      title: 'Pals & Elements API',
+      version: '1.0.0',
+      description: 'A CRUD API for managing Pals and Elements',
+    },
+    servers: [
+      {
+        url: `http://localhost:3001`,
+        description: 'Development server',
+      },
+    ],
+  },
+  apis: ['./docs/*.yaml'], // Updated to use YAML files from docs folder
+};
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Basic route
 app.get('/', (req, res) => {
@@ -59,7 +83,12 @@ app.get('/api/pals/:id', (req, res) => {
   try {
     const pals = palsData.pals
     let pal = pals.find((pal, index) => pal.id === req.params.id)
-
+    if (!pal) {
+      return res.status(404).json({
+        error: 'Pal not found',
+        message: `No pal found with ID: ${req.params.id}`
+      });
+    }
     return res.json({ pal });
   } catch (error) {
     res.status(500).json({ error: error.message });

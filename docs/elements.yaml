@@ -1,0 +1,293 @@
+paths:
+  /api/elements:
+    get:
+      summary: Get all elements
+      description: Retrieve a complete list of all elements with their icon URLs
+      tags:
+        - Elements
+      responses:
+        '200':
+          description: Successfully retrieved all elements
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                example:
+                  Neutral: "https://i.imgur.com/your-url.png"
+                  Fire: "https://i.imgur.com/your-url.png"
+                  Water: "https://i.imgur.com/your-url.png"
+    
+    post:
+      summary: Create a new element
+      description: Add a new element to the database
+      tags:
+        - Elements
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - url
+              properties:
+                name:
+                  type: string
+                  description: Name of the element
+                  example: "Electric"
+                url:
+                  type: string
+                  description: URL to the element icon image
+                  example: "https://i.imgur.com/electric-icon.png"
+      responses:
+        '201':
+          description: Element created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Element created successfully"
+                  element:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "Electric"
+                      url:
+                        type: string
+                        example: "https://i.imgur.com/electric-icon.png"
+        '400':
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Missing required fields"
+                  required:
+                    type: array
+                    items:
+                      type: string
+                    example: ["name", "url"]
+        '409':
+          description: Element already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Element already exists"
+                  message:
+                    type: string
+                    example: "Element 'Electric' already exists"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"
+
+  /api/elements/{name}:
+    get:
+      summary: Get element by name
+      description: Retrieve a single element by its name (case-insensitive)
+      tags:
+        - Elements
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+          description: The element name
+          example: "Fire"
+      responses:
+        '200':
+          description: Element found successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Fire"
+                  url:
+                    type: string
+                    example: "https://i.imgur.com/fire-icon.png"
+        '404':
+          description: Element not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Element not found"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"
+    
+    put:
+      summary: Update element by name
+      description: Update an existing element's icon URL
+      tags:
+        - Elements
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+          description: The element name to update
+          example: "Fire"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                  description: Updated URL for the element icon
+                  example: "https://i.imgur.com/new-fire-icon.png"
+      responses:
+        '200':
+          description: Element updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Element updated successfully"
+                  element:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "Fire"
+                      url:
+                        type: string
+                        example: "https://i.imgur.com/new-fire-icon.png"
+        '400':
+          description: Missing required field
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Missing required field"
+                  required:
+                    type: array
+                    items:
+                      type: string
+                    example: ["url"]
+        '404':
+          description: Element not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Element not found"
+                  message:
+                    type: string
+                    example: "No element found with name: Fire"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"
+    
+    delete:
+      summary: Delete element by name
+      description: Remove an element from the database
+      tags:
+        - Elements
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+          description: The element name to delete
+          example: "Fire"
+      responses:
+        '200':
+          description: Element deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Element deleted successfully"
+                  element:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "Fire"
+                      url:
+                        type: string
+                        example: "https://i.imgur.com/fire-icon.png"
+        '404':
+          description: Element not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Element not found"
+                  message:
+                    type: string
+                    example: "No element found with name: Fire"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"
