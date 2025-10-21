@@ -16,7 +16,7 @@ npm install
 npm start
 ```
 
-The server will start on port 3000 (or the port specified in the PORT environment variable).
+The server will start on port 3001 (or the port specified in the PORT environment variable).
 
 ### Available Endpoints
 
