@@ -239,11 +239,6 @@
                 "appearance": "Rooby resembles a small red deer with a plume of fire on its forehead that burns brightly. Its body is covered in sleek, cream-colored fur on the legs, underbelly, and face, while the rest of its body is a vibrant red. The fur around the front of its neck is shaped like a bowtie, giving it a distinct and elegant appearance. Rooby's ears are large and pointed, standing upright, and its bright blue eyes are sharp and expressive. Its most prominent feature is its very large, bushy tail, which is about the length of its body and has a smooth, rounded shape, adding to its striking silhouette. Its legs are slender but sturdy, with red markings just above its hooves, complementing its fiery theme.",
                 "behavior": "Wild Rooby will be passive towards the player and may flee. Like most other Pals, it will become aggressive when attacked."
             }
-        },
-        {
-            "elements": "dragon",
-            "name": "test",
-            "id": "011"
         }
     ]
 }
