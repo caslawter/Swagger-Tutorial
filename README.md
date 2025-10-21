@@ -22,10 +22,3 @@ The server will start on port 3001 (or the port specified in the PORT environmen
 
 - `GET /` - Welcome message
 - `GET /health` - Health check endpoint
-
-### Testing
-You can test the server using curl:
-```bash
-curl http://localhost:3000/
-curl http://localhost:3000/health
-```
