@@ -18,7 +18,26 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.json({
     message: 'Welcome to the Swagger Tutorial API',
-    status: 'Server is running'
+    status: 'Server is running',
+    availableRoutes: {
+      pals: [
+        'GET /api/pals - Get all pals',
+        'GET /api/pals/:id - Get pal by ID',
+        'POST /api/pals - Create a new pal',
+        'PUT /api/pals/:id - Update pal by ID',
+        'DELETE /api/pals/:id - Delete pal by ID'
+      ],
+      elements: [
+        'GET /api/elements - Get all elements',
+        'GET /api/elements/:name - Get element by name',
+        'POST /api/elements - Create a new element',
+        'PUT /api/elements/:name - Update element by name',
+        'DELETE /api/elements/:name - Delete element by name'
+      ],
+      other: [
+        'GET /health - Health check'
+      ]
+    }
   });
 });
 
